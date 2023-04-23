@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sample Plugin Api Implementation</title>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <script async=false>
+        (function() {
+            var src = window.location.host.split(".").slice(2).join(".") === "com.cn" ? "https://js-stratus.zohostatic.com.cn/sigma/client/sdk/v1/sigma-sdk.min.js" : "https://static.zohocdn.com/sigma/client/sdk/v1/sigma-sdk.min.js";
+            document.write('<script src="' + src + '"><\/script>');
+        })();
+    </script>
+    <script src="./js/jquery-min.js"></script>
+    <script src="./js/apiUtil.js"></script>
+    <script src="./js/appView.js"></script>
+    <script src="./js/initApp.js"></script>
+    <link href="./css/style.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+    <div id="app">
+        <v-app>
+            <br>
+
+
+            <template>
+  <v-card style="height:100%">
+    <template slot="progress">
+      <v-progress-linear
+        color="deep-purple"
+        height="10"
+        indeterminate
+      ></v-progress-linear>
+      
+    </template>
+
+            <center>
+                <v-card-title style="color:gray; font-size:14px; display:none;" id="centerDiv">SPAM CONTROL </v-card-title>
+
+                <v-card-title style="color:gray; font-size:14px; margin-left:82px;" id="control">SPAM CONTROL </v-card-title>
+
+                <v-card-title style="color:gray; font-size:14.5px;" id="pre">THIS EXTENSION HELP TO YOU BLOCK EMAILS AND DOMAINS</v-card-title>
+            </center>
+            <!--<v-card-title>Open a mail to get view details </v-card-title>-->
+
+            <!--Email and Domain    -->
+           
+            <v-row>
+
+                <v-col cols="6">
+                    <div id="maildet">
+
+                    </div>
+                </v-col>
+
+                <v-col cols="6">
+                    <div id="button" style="margin-left: 16px;margin-top: 5px">
+
+                    </div>
+
+                </v-col>
+                <!--Email and Domain    -->
+
+            </v-row>
+             <div id="Note" style="display:none;font-size: 10px;font-weight: 500;margin-left:9px;color:gray;font-family:math">
+                <span style="font-size:12px">Note:<br>
+<i class="fa fa-check-circle-o" style="font-size:15px;color:green"></i>   Whitelist Email/Domain<br>
+<i class="fa fa-times-circle-o" style="font-size:15px;color:red"> </i>  Blacklist Email/Domain<br>
+<i class="fa fa-ban" style="font-size:15px;color:black"> </i>   Remove Email/Domain from Whitelist/Blacklist<br><br>
+</span>
+
+            </div>
+            </v-card>
+
+            </template>
+
+
+
+        </v-app>
+
+    </div>
+
+
+
+    <!--vuejs added-->
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            vuetify: new Vuetify(),
+            data() {
+
+
+                return {
+
+
+                }
+            },
+        })
+    </script>
+
+</body>
+
+</html>

@@ -50,7 +50,7 @@
             <!--<v-card-title>Open a mail to get view details </v-card-title>-->
 
             <!--Email and Domain    -->
-           
+
             <v-row>
 
                 <v-col cols="6">
@@ -68,14 +68,31 @@
                 <!--Email and Domain    -->
 
             </v-row>
-             <div id="Note" style="display:none;font-size: 10px;font-weight: 500;margin-left:9px;color:gray;font-family:math">
+            <div id="Note" style="display:none;font-size: 10px;font-weight: 500;margin-left:9px;color:gray;font-family:math">
                 <span style="font-size:12px">Note:<br>
-<i class="fa fa-check-circle-o" style="font-size:15px;color:green"></i>   Whitelist Email/Domain<br>
-<i class="fa fa-times-circle-o" style="font-size:15px;color:red"> </i>  Blacklist Email/Domain<br>
-<i class="fa fa-ban" style="font-size:15px;color:black"> </i>   Remove Email/Domain from Whitelist/Blacklist<br><br>
-</span>
+                <i class="fa fa-check-circle-o" style="font-size:15px;color:green"></i>   Whitelist Email/Domain<br>
+                <i class="fa fa-times-circle-o" style="font-size:15px;color:red"> </i>  Blacklist Email/Domain<br>
+                <i class="fa fa-ban" style="font-size:15px;color:black"> </i>   Remove Email/Domain from Whitelist/Blacklist<br><br>
+                </span>
 
             </div>
+            <v-alert id="Alert"  closable type="error" variant="outlined" style="font-size: 15px; margin-top: -150px; display: none;">Oops! We're sorry, but we encountered an error while processing your request. Please try again later. If the problem persists, please contact our support team for assistance.
+            
+             <v-row >
+                     <v-col cols="4">
+
+                    </v-col>
+                     <v-col cols="4">
+
+                    </v-col>
+                    <v-col cols="4">
+                        <v-btn color="white" onclick="Ok()" style="color: black ;font-size: 12px; margin-top:5px;">Ok</v-btn>
+                    </v-col>
+                   
+                   
+                </v-row>
+            </v-alert>
+          
             </v-card>
 
             </template>

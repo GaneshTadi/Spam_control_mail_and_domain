@@ -24,15 +24,16 @@ let populateMailDetails = function(mailInfo) {
  * Subscribe to Events you need using ZMSDK.app.on()
  */
 var AllMails = [];
-var All_Domain =[];
+var All_Domain = [];
 AppSDK.on("mail_preview", function(mailObj) {
     window.apiUtil.getMailDetails(mailObj.MSGID).then(function(mailInfo) {
+        console.log("onload mailinfo error:",mailObj.MSGID);
         document.getElementById("control").style.display = "none";
         document.getElementById("Note").style.display = "block";
         document.getElementById("pre").style.display = "none";
         document.getElementById("centerDiv").style.display = "block";
 
-        // console.log(mailInfo);
+        console.log('klk',mailInfo);
 
 
         var Domains = [];
@@ -105,9 +106,6 @@ AppSDK.on("mail_preview", function(mailObj) {
         //***Emails getting ****//
 
         //**From email **//
-
-
-
 
         var elabel = document.createElement("LABEL");
         // var lblfrom = document.createTextNode(from);
@@ -270,7 +268,7 @@ AppSDK.on("mail_preview", function(mailObj) {
                     cc_email_clear_btn.onclick = function(e) {
                         fun_clearmail(e);
                     };
-                     
+
                     icon_c2.setAttribute("id", remarray[c1] + "_clearemail");
                     cc_email_clear_btn.setAttribute("id", remarray[c1] + "_clearemail");
                     cc_email_clear_btn.setAttribute("style", "height: 26px;min-width: 24px; font-size: 10px;color: black; margin-top: -8px; margin-left: 5px;align-items: center;display: inline-flex;flex: 0 0 auto; font-weight: 500; justify-content: center; outline: 0;position: relative; text-decoration: none; text-transform: uppercase;transition-duration: .28s;transition-property: box-shadow,transform,opacity;transition-timing-function: cubic-bezier(.4,0,.2,1);vertical-align: middle;white-space: nowrap;border-style: initial;");
@@ -311,12 +309,12 @@ AppSDK.on("mail_preview", function(mailObj) {
         const AllDomains = [...new Set(alldomains)];
         console.log("AllDomains", AllDomains);
 
-for (const dom1 in AllDomains) {
-    // All_Domain.pop();
-    All_Domain.push(AllDomains[dom1])
-    console.log("hi")
-    
-}
+        for (const dom1 in AllDomains) {
+            // All_Domain.pop();
+            All_Domain.push(AllDomains[dom1])
+            console.log("hi")
+
+        }
         for (const d in AllDomains) {
             var dolabel = document.createElement("LABEL");
             dolabel.appendChild(document.createTextNode(AllDomains[d]));
@@ -408,8 +406,9 @@ for (const dom1 in AllDomains) {
             }
 
         }).then(function(successResponse) {
+            console.log("onload spam info :",successResponse);
             var succ = JSON.stringify(successResponse);
-            // console.log(succ);
+           
             var res = JSON.parse(succ);
             var respon = res.response;
             let rr = JSON.parse(respon);
@@ -418,7 +417,8 @@ for (const dom1 in AllDomains) {
             // console.log("zoid",zoid);
             var status = rr.status;
             var code = status.code;
-            // console.log("404 code:", code);
+            console.log("error code[400]:", code);
+
 
             //** add whitelist  email **
 
@@ -436,7 +436,7 @@ for (const dom1 in AllDomains) {
 
 
             }).then(function(successResponse) {
-                    // 
+                   
                     var succ = JSON.stringify(successResponse);
                     // console.log("succ",succ);
                     var res = JSON.parse(succ);
@@ -764,7 +764,20 @@ for (const dom1 in AllDomains) {
 
             //** end Domain whitelisted**//
 
-        });
+        },
+        
+        function(errorResponse) {
+        var err = JSON.stringify(errorResponse);
+        console.log("error ", err);
+         var res = JSON.parse(err);
+         var error_code =res.status;
+            console.log("error responce",error_code); 
+            // @ Server error alert @ //
+            if(error_code==400){
+              document.getElementById("Alert").style.display = "block";
+            }
+            // @ End Server error alert @ //
+            });
 
 
         populateMailDetails(mailInfo);
@@ -801,7 +814,7 @@ function emailallow() {
 
     }).then(function(successResponse) {
         var succ = JSON.stringify(successResponse);
-        // console.log(succ);
+        console.log("Success emailallow:",successResponse);
         var res = JSON.parse(succ);
         var respon = res.response;
         let rr = JSON.parse(respon);
@@ -984,7 +997,20 @@ function emailallow() {
 
 
         //**end whitelist email**//
-    })
+    },
+     function(errorResponse) {
+        var err = JSON.stringify(errorResponse);
+        console.log("error ", err);
+         var res = JSON.parse(err);
+         var error_code =res.status;
+            console.log("error responce",error_code); 
+            // @ Server error alert @ //
+            if(error_code==400){
+              document.getElementById("Alert").style.display = "block";
+            }
+            // @ End Server error alert @ //
+            });
+
 
 }
 
@@ -1201,7 +1227,20 @@ function fun_Blockmail() {
 
 
         //**end blocklist email**//
-    })
+    },
+     function(errorResponse) {
+        var err = JSON.stringify(errorResponse);
+        console.log("error ", err);
+         var res = JSON.parse(err);
+         var error_code =res.status;
+            console.log("error responce",error_code); 
+           // @ Server error alert @ //
+            if(error_code==400){
+              document.getElementById("Alert").style.display = "block";
+            }
+            // @ End Server error alert @ //
+            });
+
 }
 
 //** End block mail **//
@@ -1216,7 +1255,7 @@ var split_domain_l = [];
 
 function domainallow() {
     // All_Domain.pop();
-    console.log("hi_All_Domain",All_Domain)
+    console.log("hi_All_Domain", All_Domain)
     // console.log("AllMails", AllMails);
     // console.log("All_Split_Domain:", split_domain_l)
     var Allow_Domain = event.srcElement.id;
@@ -1497,38 +1536,38 @@ function domainallow() {
                                             var All_btn = document.getElementById(split_Allow_Domain[0] + "_allowdomain");
                                             All_btn.style.color = "grey";
                                         }
-                                         
-                                        
-                                            const All_Mails = [...new Set(AllMails)];
-                                            console.log("All_Mails", All_Mails);
-                                            for(var tt in All_Domain){ 
-                                            for(var jk in split_Allow_Domain){
-                                              for(var i in All_Mails){
-                                             var Mails_block = All_Mails[i].split("@");
-                                              if(split_Allow_Domain[jk]==Mails_block[1]){
-                                                  console.log("You can change the color");
-                                                 var Bl_mail1 = document.getElementById(All_Mails[i]);
-                                                 Bl_mail1.style.color = "green";
-                                                  var btn_allow = document.getElementById(All_Mails[i] + "_blockemail");
-                                                  btn_allow.disabled = false;
-                                                  if (btn_allow.disabled == false) {
-                                                    var All_btn3 = document.getElementById(All_Mails[i] + "_blockemail");
-                                                    All_btn3.style.color = "red";
+
+
+                                        const All_Mails = [...new Set(AllMails)];
+                                        console.log("All_Mails", All_Mails);
+                                        for (var tt in All_Domain) {
+                                            for (var jk in split_Allow_Domain) {
+                                                for (var i in All_Mails) {
+                                                    var Mails_block = All_Mails[i].split("@");
+                                                    if (split_Allow_Domain[jk] == Mails_block[1]) {
+                                                        console.log("You can change the color");
+                                                        var Bl_mail1 = document.getElementById(All_Mails[i]);
+                                                        Bl_mail1.style.color = "green";
+                                                        var btn_allow = document.getElementById(All_Mails[i] + "_blockemail");
+                                                        btn_allow.disabled = false;
+                                                        if (btn_allow.disabled == false) {
+                                                            var All_btn3 = document.getElementById(All_Mails[i] + "_blockemail");
+                                                            All_btn3.style.color = "red";
+                                                        }
+                                                        console.log(All_Mails[i], "_blockemail")
+                                                        const button3 = document.getElementById(All_Mails[i] + "_allowemail");
+                                                        console.log("button3", button3)
+                                                        button3.disabled = true;
+                                                        if (button3.disabled == true) {
+                                                            var Bll_btn = document.getElementById(All_Mails[i] + "_allowemail");
+                                                            Bll_btn.style.color = "grey";
+                                                        }
+                                                    }
+
                                                 }
-                                                console.log(All_Mails[i],"_blockemail")
-                                                const button3 = document.getElementById(All_Mails[i] + "_allowemail");
-                                                console.log("button3", button3)
-                                                button3.disabled = true;
-                                                if (button3.disabled == true) {
-                                                var Bll_btn = document.getElementById(All_Mails[i] + "_allowemail");
-                                                Bll_btn.style.color = "grey";
-                                              }
-                                              }
- 
-                                              }
+                                            }
                                         }
                                     }
-                                     }
                                 })
 
                             }
@@ -1556,7 +1595,20 @@ function domainallow() {
 
 
         //**end whitelist Domain**//
-    })
+    },
+     function(errorResponse) {
+        var err = JSON.stringify(errorResponse);
+        console.log("error ", err);
+         var res = JSON.parse(err);
+         var error_code =res.status;
+            console.log("error responce",error_code); 
+           // @ Server error alert @ //
+            if(error_code==400){
+              document.getElementById("Alert").style.display = "block";
+            }
+            // @ End Server error alert @ //
+            });
+
 }
 //*End Allow Domain*//
 
@@ -1700,48 +1752,48 @@ function block_domain() {
                             // disable and change color button
                             for (const ddb in result_dom_block) {
                                 const btn_block = document.getElementById(result_dom_block[ddb] + "_blockdomain");
-                                 btn_block.disabled = true;
-                                 
+                                btn_block.disabled = true;
+
                                 if (btn_block.disabled == true) {
                                     var All_btn2 = document.getElementById(result_dom_block[ddb] + "_blockdomain");
                                     //  console.log("eml", eml);
                                     All_btn2.style.color = "grey";
-                                    
+
                                 }
-                               
+
 
                                 //**Domain is block show the related email red color and block the block button**//
 
                                 //  console.log("AllMails_______block domain",AllMails);
                                 for (const n in result_dom_block) {
                                     for (var kl in AllMails) {
-                                        var spilt_domain = AllMails[kl].split('@')[1];
+                                        var spilt_domain = AllMails[kl].split('@')[1]
                                         // console.log("spilt_mail_domain",spilt_domain)
 
                                         if (result_dom_block[n] == spilt_domain) {
 
-                                            
+
                                             var domain_block = document.getElementById(AllMails[kl]);
                                             domain_block.style.color = "red";
                                             const Do_Block = document.getElementById(AllMails[kl] + "_blockemail");
                                             Do_Block.disabled = true;
-                                            // var btn_allow = document.getElementById(AllMails[kl] + "_allowemail");
-                                            // btn_allow.disabled = false;
+                                            var btn_allow = document.getElementById(AllMails[kl] + "_allowemail");
+                                            btn_allow.disabled = true;
                                             if (Do_Block.disabled == true) {
                                                 var All_btn_do_block = document.getElementById(AllMails[kl] + "_blockemail");
                                                 All_btn_do_block.style.color = "gray";
-                                                console.log("All_btn_do_block",All_btn_do_block)
-                                                // var All_btn3 = document.getElementById(AllMails[kl] + "_allowemail");
-                                                // All_btn3.style.color = "green";
-                                            
+                                                console.log("All_btn_do_block", All_btn_do_block)
+                                                var All_btn3 = document.getElementById(AllMails[kl] + "_allowemail");
+                                                All_btn3.style.color = "gray";
                                             }
+                                            
                                         }
                                     }
 
                                 }
-                                
-                               
-                                
+
+
+
                                 //**End Domain is block show the related email red color and block the block button **//
 
                             }
@@ -1844,43 +1896,47 @@ function block_domain() {
                                         const button2 = document.getElementById(split_Block_domain[0] + "_blockdomain");
                                         console.log("button2", button2)
                                         button2.disabled = true;
-                                       
+
                                         if (button2.disabled == true) {
                                             var Bll_btn = document.getElementById(split_Block_domain[0] + "_blockdomain");
                                             Bll_btn.style.color = "grey";
-                                               
+
                                             const All_Mails = [...new Set(AllMails)];
                                             console.log("All_Mails", All_Mails);
-                                             for(var tt in All_Domain){ 
-                                            for(var jk in split_domain_block){
-                                              for(var i in All_Mails){
-                                             var Mails_block = All_Mails[i].split("@");
-                                              if(split_domain_block[jk]==Mails_block[1]){
-                                                  console.log("You can change the color");
-                                                 var Bl_mail1 = document.getElementById(All_Mails[i]);
-                                                 Bl_mail1.style.color = "red";
-                                                  var btn_allow = document.getElementById(All_Mails[i] + "_allowemail");
-                                                  btn_allow.disabled = false;
-                                                  if (btn_allow.disabled == false) {
-                                                    var All_btn3 = document.getElementById(All_Mails[i] + "_allowemail");
-                                                    All_btn3.style.color = "green";
+                                            for (var tt in All_Domain) {
+                                                for (var jk in split_domain_block) {
+                                                    for (var i in All_Mails) {
+                                                        var Mails_block = All_Mails[i].split("@");
+                                                        if (split_domain_block[jk] == Mails_block[1]) {
+                                                            console.log("You can change the color");
+                                                            var Bl_mail1 = document.getElementById(All_Mails[i]);
+                                                            Bl_mail1.style.color = "red";
+                                                            var btn_allow = document.getElementById(All_Mails[i] + "_allowemail");
+                                                            btn_allow.disabled = false;
+                                                            if (btn_allow.disabled == false) {
+                                                                var All_btn3 = document.getElementById(All_Mails[i] + "_allowemail");
+                                                                All_btn3.style.color = "green";
+                                                            }
+                                                            // console.log(All_Mails[i],"_allowemail")
+                                                            const button3 = document.getElementById(All_Mails[i] + "_blockemail");
+                                                            console.log("button3", button3)
+                                                            button3.disabled = true;
+                                                             var btn_allow = document.getElementById(AllMails[i] + "_allowemail");
+                                                             btn_allow.disabled = true;
+                                                            if (button3.disabled == true) {
+                                                                var Bll_btn = document.getElementById(All_Mails[i] + "_blockemail");
+                                                                Bll_btn.style.color = "grey";
+                                                                // var All_btn3 = document.getElementById(AllMails[i] + "_allowemail");
+                                                                btn_allow.style.color = "gray";
+                                                            }
+                                                        }
+
+                                                    }
                                                 }
-                                                // console.log(All_Mails[i],"_allowemail")
-                                                const button3 = document.getElementById(All_Mails[i] + "_blockemail");
-                                                console.log("button3", button3)
-                                                button3.disabled = true;
-                                                if (button3.disabled == true) {
-                                                var Bll_btn = document.getElementById(All_Mails[i] + "_blockemail");
-                                                Bll_btn.style.color = "grey";
-                                              }
-                                              }
- 
-                                              }
+
+                                            }
                                         }
-                                        
-                                             }    
-                                        }
-                                        
+
                                     }
 
                                 })
@@ -1911,7 +1967,22 @@ function block_domain() {
 
 
         //**end blocklist domain**//
-    })
+    },
+    function(errorResponse) {
+        var err = JSON.stringify(errorResponse);
+           var err = JSON.stringify(errorResponse);
+        console.log("error ", err);
+         var res = JSON.parse(err);
+         var error_code =res.status;
+            console.log("error responce",error_code); 
+           // @ Server error alert @ //
+            if(error_code==400){
+              document.getElementById("Alert").style.display = "block";
+            }
+            // @ End Server error alert @ //
+
+                }
+                );
 }
 //*End Block Domain*//
 
@@ -2025,18 +2096,18 @@ function fun_clearmail() {
                                 if (code == 200) {
                                     var Al_mail = document.getElementById(split_email_clear[0]);
                                     Al_mail.style.color = "black";
-                                   
-                                    for(var tt in All_Domain){
+
+                                    for (var tt in All_Domain) {
                                         // console.log("AAA all mails",AllMails)
                                         // console.log("AAA All_Domain",All_Domain)
-                                    const button2 = document.getElementById(split_email_clear[0] + "_allowemail");
-                                    console.log("button2", button2)
-                                    button2.disabled = false;
-                                    if (button2.disabled == false) {
-                                        var All_btn = document.getElementById(split_email_clear[0] + "_allowemail");
-                                        //  console.log("eml", eml);
-                                        All_btn.style.color = "green";
-                                    }
+                                        const button2 = document.getElementById(split_email_clear[0] + "_allowemail");
+                                        console.log("button2", button2)
+                                        button2.disabled = false;
+                                        if (button2.disabled == false) {
+                                            var All_btn = document.getElementById(split_email_clear[0] + "_allowemail");
+                                            //  console.log("eml", eml);
+                                            All_btn.style.color = "green";
+                                        }
                                     }
                                 }
 
@@ -2161,7 +2232,21 @@ function fun_clearmail() {
             })
         //** End check black and remove **//
 
-    });
+    },
+    function(errorResponse) {
+         var err = JSON.stringify(errorResponse);
+        console.log("error ", err);
+         var res = JSON.parse(err);
+         var error_code =res.status;
+            console.log("error responce",error_code); 
+           // @ Server error alert @ //
+            if(error_code==400){
+              document.getElementById("Alert").style.display = "block";
+            }
+            // @ End Server error alert @ //
+
+                }
+                );
 
     //End check spam info
 }
@@ -2279,20 +2364,20 @@ function fun_cleardomain() {
 
                                     const button2 = document.getElementById(split_domain_clear[0] + "_allowdomain");
                                     console.log("button2", button2)
-                                        // console.log("AAA all mails",AllMails)
-                                        // console.log("AAA All_Domain",All_Domain)
-                                        //  const All_Mails = [...new Set(AllMails)];
-                                        //  console.log("All_Mails", All_Mails);
-                                        // for(var dk in split_domain_clear){
-                                        //     for(var jk in All_Mails){
-                                               
-                                        //      var Mails_block = All_Mails[jk].split("@");
-                                        //       if(All_Domain[dk]==Mails_block[1]){
-                                        //         console.log("Mails_block[1]",Mails_block[1])
-                                        //       }
-                                        //     }
-                                        // }
-                                        
+                                    // console.log("AAA all mails",AllMails)
+                                    // console.log("AAA All_Domain",All_Domain)
+                                    //  const All_Mails = [...new Set(AllMails)];
+                                    //  console.log("All_Mails", All_Mails);
+                                    // for(var dk in split_domain_clear){
+                                    //     for(var jk in All_Mails){
+
+                                    //      var Mails_block = All_Mails[jk].split("@");
+                                    //       if(All_Domain[dk]==Mails_block[1]){
+                                    //         console.log("Mails_block[1]",Mails_block[1])
+                                    //       }
+                                    //     }
+                                    // }
+
                                     button2.disabled = false;
                                     if (button2.disabled == false) {
                                         var All_btn = document.getElementById(split_domain_clear[0] + "_allowdomain");
@@ -2306,13 +2391,13 @@ function fun_cleardomain() {
                                             var spilt_mail = AllMails[aa].split('@')[1];
                                             if (split_domain_clear[yy] == spilt_mail) {
                                                 var Aa_mail = document.getElementById(AllMails[aa]);
-                                                Aa_mail.style.color ="black";
-                                               const E_allow_Btn = document.getElementById(AllMails[aa] + "_allowemail");
-                                                console.log("E_allow_Btn fro Allow",E_allow_Btn)
-                                                 E_allow_Btn.disabled = false;
-                                                    if (E_allow_Btn.disabled == false) {
-                                                        E_allow_Btn.style.color = "green";
-                                                    }
+                                                Aa_mail.style.color = "black";
+                                                const E_allow_Btn = document.getElementById(AllMails[aa] + "_allowemail");
+                                                console.log("E_allow_Btn fro Allow", E_allow_Btn)
+                                                E_allow_Btn.disabled = false;
+                                                if (E_allow_Btn.disabled == false) {
+                                                    E_allow_Btn.style.color = "green";
+                                                }
                                             }
                                         }
                                     }
@@ -2426,12 +2511,15 @@ function fun_cleardomain() {
                                             if (split_domain_clear[yy] == spilt_mail) {
                                                 var Aa_mail = document.getElementById(AllMails[aa]);
                                                 Aa_mail.style.color = "black";
-                                                const E_allow_Btn = document.getElementById(AllMails[aa] + "_blockemail");
-                                                console.log("E_allow_Btn",E_allow_Btn)
-                                                 E_allow_Btn.disabled = false;
-                                                    if (E_allow_Btn.disabled == false) {
-                                                        E_allow_Btn.style.color = "red";
-                                                    }
+                                                const E_block_Btn = document.getElementById(AllMails[aa] + "_blockemail");
+                                                const E_allow_Btn = document.getElementById(AllMails[aa] + "_allowemail");
+                                                console.log("E_block_Btn", E_block_Btn)
+                                                E_block_Btn.disabled = false;
+                                                E_allow_Btn.disabled = false;
+                                                if (E_block_Btn.disabled == false || E_allow_Btn.disabled == false) {
+                                                    E_block_Btn.style.color = "red";
+                                                    E_allow_Btn.style.color = "green";
+                                                }
                                             }
                                         }
                                     }
@@ -2534,12 +2622,34 @@ function fun_cleardomain() {
 
         //** end Domain whitelisted**//
 
-    });
+    },
+    function(errorResponse) {
+           var err = JSON.stringify(errorResponse);
+        console.log("error ", err);
+         var res = JSON.parse(err);
+         var error_code =res.status;
+            console.log("error responce",error_code); 
+           // @ Server error alert @ //
+            if(error_code==400){
+              document.getElementById("Alert").style.display = "block";
+            }
+            // @ End Server error alert @ //
+
+                }
+    
+    );
 
     //End check spam info
 }
 
 
+function Ok(){
+     document.getElementById("maildet").style.display = "none";
+     document.getElementById("Note").style.display = "none";
+     document.getElementById("button").style.display = "none";
+     document.getElementById("Alert").style.display = "none";
+     
+}
 /**
  *  Event to detect compose window open
  */
